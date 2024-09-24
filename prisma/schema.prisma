@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Rank {
+    id         Int      @id @default(autoincrement())
+    name       String
+    color      String
+    group      String
+    visual     String
+    is_bold    Boolean
+    color_code String
+    players    Player[] @relation("PlayerRanks")
+}
+
+model Version {
+    id          Int       @id @default(autoincrement())
+    protocol Int
+    players      Player[]  // A version can be used by many players
+}
+
+model Activity {
+    id                    Int      @id @default(autoincrement())
+    online                Boolean
+    last_join             DateTime
+    first_join            DateTime
+    current_server        String
+    last_join_formatted   String
+    first_join_formatted  String
+    playerId              Int?     @unique  // One-to-one relation with Player, optional
+    player                Player?  @relation(fields: [playerId], references: [id])
+}
+
+model Player {
+    id             Int        @id @default(autoincrement())
+    exp            Int
+    points         Int
+    uuid           String
+    guild          String
+    level          Int
+    ranks          Rank[]     @relation("PlayerRanks")  // Many-to-Many relation with Rank
+    versionId      Int?
+    version        Version?    @relation(fields: [versionId], references: [id])
+    activity       Activity?  @relation // One-to-One relation
+    username       String
+    uuid_array     Int[]
+    simple_uuid    String
+}
+
+

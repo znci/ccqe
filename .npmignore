@@ -1,0 +1,7 @@
+# TS Source Files
+src
+
+# Environment Variables
+.env
+.env.development
+.env.production

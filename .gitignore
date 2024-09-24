@@ -1,0 +1,11 @@
+# Compiled TS files
+dist
+
+# NPM Files
+node_modules
+package-lock.json
+
+# Environment Variables
+.env
+.env.development
+.env.production
